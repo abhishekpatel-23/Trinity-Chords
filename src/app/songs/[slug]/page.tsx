@@ -150,7 +150,7 @@ export default async function SongDetailPage({ params }: Props) {
               try { chordData = JSON.parse(chord.chordData) } catch {}
               return (
                 <div key={chord.id} style={{ marginTop: "48px" }}>
-                  <div style={{ display: "flex", alignItems: "center", justifyBetween: "space-between", marginBottom: "20px" }}>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "20px" }}>
                     <h2 style={{ fontFamily: "var(--font-display)", fontSize: "22px", fontWeight: "700", color: "#030813" }}>Guitar Chords</h2>
                     <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
                       <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
@@ -301,7 +301,7 @@ export default async function SongDetailPage({ params }: Props) {
                           justifyContent: "center",
                           background: "rgba(3,8,19,0.3)",
                         }}>
-                          <div style={{ width: "40px", height: "40px", borderRadius: "50%", background: "rgba(255,255,255,0.9)", display: "flex", alignItems: "center", justifyCenter: "center" }}>
+                          <div style={{ width: "40px", height: "40px", borderRadius: "50%", background: "rgba(255,255,255,0.9)", display: "flex", alignItems: "center", justifyContent: "center" }}>
                             <span className="material-symbols-outlined" style={{ fontSize: "22px", color: "#74593e", fontVariationSettings: "'FILL' 1", paddingLeft: "2px" }}>play_arrow</span>
                           </div>
                         </div>
@@ -339,7 +339,7 @@ export default async function SongDetailPage({ params }: Props) {
                           transition: "background 0.15s",
                         }}
                       >
-                        <div style={{ width: "40px", height: "40px", borderRadius: "8px", background: "#fdd9b6", display: "flex", alignItems: "center", justifyCenter: "center", flexShrink: 0 }}>
+                        <div style={{ width: "40px", height: "40px", borderRadius: "8px", background: "#fdd9b6", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
                           <span className="material-symbols-outlined" style={{ fontSize: "20px", color: "#74593e", fontVariationSettings: "'FILL' 1" }}>music_note</span>
                         </div>
                         <div style={{ minWidth: 0 }}>
@@ -379,7 +379,7 @@ export default async function SongDetailPage({ params }: Props) {
 
       {/* Footer */}
       <footer style={{ borderTop: "1px solid rgba(198,198,204,0.25)", marginTop: "80px", padding: "48px 24px", background: "#fcf8f9" }}>
-        <div style={{ maxWidth: "1200px", margin: "0 auto", display: "flex", justifyBetween: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "32px" }}>
+        <div style={{ maxWidth: "1200px", margin: "0 auto", display: "flex", justifyContent: "space-between", alignItems: "flex-start", flexWrap: "wrap", gap: "32px" }}>
           <div>
             <div style={{ fontFamily: "var(--font-display)", fontSize: "18px", fontWeight: "700", color: "#030813", marginBottom: "4px" }}>Trinity Chords</div>
             <p style={{ fontFamily: "var(--font-body)", fontSize: "13px", color: "#45474c", maxWidth: "240px", lineHeight: "1.6" }}>

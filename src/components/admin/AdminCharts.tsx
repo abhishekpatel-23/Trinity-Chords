@@ -43,7 +43,7 @@ export function AdminCharts() {
         padding: "28px",
         boxShadow: "0 2px 8px rgba(3,8,19,0.04)",
       }}>
-        <div style={{ display: "flex", alignItems: "center", justifyBetween: "space-between", marginBottom: "24px" }}>
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "24px" }}>
           <h3 style={{ fontFamily: "var(--font-display)", fontSize: "20px", fontWeight: "700", color: "#030813" }}>Site Visits</h3>
           <div style={{ position: "relative" }}>
             <select
