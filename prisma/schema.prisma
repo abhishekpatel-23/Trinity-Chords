@@ -1,0 +1,170 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               String            @id @default(cuid())
+  name             String?
+  email            String            @unique
+  passwordHash     String?
+  googleId         String?           @unique
+  role             String            @default("visitor") // visitor, user, premium, admin
+  createdAt        DateTime          @default(now())
+  likes            SongLike[]
+  requests         SongRequest[]
+  reports          Report[]
+  subscriptions    UserSubscription[]
+}
+
+model Song {
+  id               String       @id @default(cuid())
+  title            String
+  slug             String       @unique
+  artistId         String
+  tempoBpm         Int?
+  key              String?
+  timeSignature    String?
+  genre            String?
+  isPremium        Boolean      @default(false)
+  isFeatured       Boolean      @default(false)
+  publishedAt      DateTime     @default(now())
+  
+  artist           Artist       @relation(fields: [artistId], references: [id])
+  lyrics           SongLyrics[]
+  videos           SongVideo[]
+  chords           SongChord[]
+  labels           SongLabel[]
+  likes            SongLike[]
+  reports          Report[]
+}
+
+model SongLyrics {
+  id           String @id @default(cuid())
+  songId       String
+  languageCode String
+  content      String
+  versionLabel String?
+  song         Song   @relation(fields: [songId], references: [id], onDelete: Cascade)
+  
+  @@unique([songId, languageCode])
+}
+
+model SongVideo {
+  id            String @id @default(cuid())
+  songId        String
+  youtubeId     String
+  title         String?
+  languageLabel String?
+  sortOrder     Int    @default(0)
+  song          Song   @relation(fields: [songId], references: [id], onDelete: Cascade)
+}
+
+model SongChord {
+  id          String @id @default(cuid())
+  songId      String
+  instrument  String // guitar, piano
+  chordData   String
+  difficulty  String?
+  song        Song   @relation(fields: [songId], references: [id], onDelete: Cascade)
+  
+  @@unique([songId, instrument])
+}
+
+model Artist {
+  id              String           @id @default(cuid())
+  name            String
+  bio             String?
+  profileImageUrl String?
+  songs           Song[]
+  musicians       ArtistMusician[]
+}
+
+model ArtistMusician {
+  id       String @id @default(cuid())
+  artistId String
+  name     String
+  role     String
+  imageUrl String?
+  artist   Artist @relation(fields: [artistId], references: [id], onDelete: Cascade)
+}
+
+model Label {
+  id       String      @id @default(cuid())
+  name     String
+  slug     String      @unique
+  colorHex String?
+  language String?
+  songs    SongLabel[]
+}
+
+model SongLabel {
+  songId  String
+  labelId String
+  song    Song  @relation(fields: [songId], references: [id], onDelete: Cascade)
+  label   Label @relation(fields: [labelId], references: [id], onDelete: Cascade)
+
+  @@id([songId, labelId])
+}
+
+model SongLike {
+  id        String   @id @default(cuid())
+  userId    String
+  songId    String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  song      Song     @relation(fields: [songId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, songId])
+}
+
+model SongRequest {
+  id         String   @id @default(cuid())
+  userId     String
+  songName   String
+  artistName String?
+  status     String   @default("Pending") // Pending, In Progress, Completed, Rejected
+  adminNote  String?
+  createdAt  DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Report {
+  id        String   @id @default(cuid())
+  userId    String
+  songId    String
+  reason    String
+  status    String   @default("Open") // Open, Dismissed, Resolved
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  song      Song     @relation(fields: [songId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, songId])
+}
+
+model UserSubscription {
+  id        String   @id @default(cuid())
+  userId    String
+  plan      String // monthly, yearly
+  expiresAt DateTime
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model PageView {
+  id        String   @id @default(cuid())
+  path      String
+  referrer  String?
+  createdAt DateTime @default(now())
+}
+
+model FeatureFlag {
+  id          String   @id @default(cuid())
+  key         String   @unique
+  description String?
+  enabled     Boolean  @default(false)
+  updatedAt   DateTime @updatedAt
+}
