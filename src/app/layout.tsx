@@ -26,7 +26,7 @@ export default function RootLayout({
         />
         <link
           rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Montserrat:wght@100..900&family=Public+Sans:wght@100..900&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@100..900&display=swap"
         />
       </head>
       <body className="min-h-full flex flex-col">
