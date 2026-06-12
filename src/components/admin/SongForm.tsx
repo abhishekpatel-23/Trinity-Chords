@@ -17,39 +17,60 @@ interface Label {
 interface SongFormProps {
   artists: Artist[]
   labels: Label[]
+  song?: any
 }
 
-export function SongForm({ artists, labels }: SongFormProps) {
+export function SongForm({ artists, labels, song }: SongFormProps) {
   const router = useRouter()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
 
   // Form states
-  const [title, setTitle] = useState("")
-  const [slug, setSlug] = useState("")
-  const [artistId, setArtistId] = useState("")
+  const [title, setTitle] = useState(song?.title || "")
+  const [slug, setSlug] = useState(song?.slug || "")
+  const [artistId, setArtistId] = useState(song?.artistId || "")
   const [newArtistName, setNewArtistName] = useState("")
-  const [genre, setGenre] = useState("")
-  const [key, setKey] = useState("G")
-  const [tempo, setTempo] = useState("")
-  const [timeSignature, setTimeSignature] = useState("4/4")
-  const [isFeatured, setIsFeatured] = useState(false)
-  const [isPremium, setIsPremium] = useState(false)
-  const [lyricsContent, setLyricsContent] = useState("")
-  const [languageCode, setLanguageCode] = useState("en")
-  const [youtubeId, setYoutubeId] = useState("")
-  const [chordsInput, setChordsInput] = useState("")
-  const [selectedLabelIds, setSelectedLabelIds] = useState<string[]>([])
+  const [genre, setGenre] = useState(song?.genre || "")
+  const [key, setKey] = useState(song?.key || "G")
+  const [tempo, setTempo] = useState(song?.tempoBpm ? String(song.tempoBpm) : "")
+  const [timeSignature, setTimeSignature] = useState(song?.timeSignature || "4/4")
+  const [isFeatured, setIsFeatured] = useState(song?.isFeatured || false)
+  const [isPremium, setIsPremium] = useState(song?.isPremium || false)
+
+  const initialLyric = song?.lyrics?.[0]
+  const [lyricsContent, setLyricsContent] = useState(initialLyric?.content || "")
+  const [languageCode, setLanguageCode] = useState(initialLyric?.languageCode || "en")
+
+  const [youtubeId, setYoutubeId] = useState(song?.videos?.[0]?.youtubeId || "")
+
+  // Extract chords list
+  const getGuitarChords = () => {
+    const guitarChordEntry = song?.chords?.find((c: any) => c.instrument === "guitar")
+    if (guitarChordEntry) {
+      try {
+        const parsed = JSON.parse(guitarChordEntry.chordData)
+        return parsed.map((c: any) => c.name).join(", ")
+      } catch (e) {}
+    }
+    return ""
+  }
+  const [chordsInput, setChordsInput] = useState(getGuitarChords())
+
+  const [selectedLabelIds, setSelectedLabelIds] = useState<string[]>(
+    song?.labels?.map((l: any) => l.labelId) || []
+  )
   const [customLabelsString, setCustomLabelsString] = useState("")
 
-  // Auto-generate slug when title changes (if user hasn't manually edited it significantly)
+  // Auto-generate slug when title changes (ONLY in Create mode)
   useEffect(() => {
-    const generated = title
-      .toLowerCase()
-      .replace(/[^a-z0-9]+/g, "-")
-      .replace(/(^-|-$)/g, "")
-    setSlug(generated)
-  }, [title])
+    if (!song) {
+      const generated = title
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/(^-|-$)/g, "")
+      setSlug(generated)
+    }
+  }, [title, song])
 
   // Initialize artist selection
   useEffect(() => {
@@ -94,8 +115,11 @@ export function SongForm({ artists, labels }: SongFormProps) {
     }
 
     try {
-      const res = await fetch("/api/admin/songs", {
-        method: "POST",
+      const url = song ? `/api/admin/songs/${song.id}` : "/api/admin/songs"
+      const method = song ? "PUT" : "POST"
+
+      const res = await fetch(url, {
+        method,
         headers: {
           "Content-Type": "application/json",
         },
@@ -122,7 +146,7 @@ export function SongForm({ artists, labels }: SongFormProps) {
       const data = await res.json()
 
       if (!res.ok) {
-        setError(data.error || "Failed to create song")
+        setError(data.error || "Failed to save song")
         setLoading(false)
         return
       }
@@ -156,7 +180,7 @@ export function SongForm({ artists, labels }: SongFormProps) {
         marginBottom: "24px",
         borderBottom: "1px solid rgba(198,198,204,0.15)",
         paddingBottom: "12px",
-      }}>Create New Song Sheet</h2>
+      }}>{song ? "Edit Song Sheet" : "Create New Song Sheet"}</h2>
 
       {error && (
         <div style={{
@@ -493,7 +517,7 @@ export function SongForm({ artists, labels }: SongFormProps) {
               opacity: loading ? 0.7 : 1,
             }}
           >
-            {loading ? "Saving Song..." : "Save Song Sheet"}
+            {loading ? "Saving..." : (song ? "Update Song Sheet" : "Save Song Sheet")}
           </button>
         </div>
       </form>
