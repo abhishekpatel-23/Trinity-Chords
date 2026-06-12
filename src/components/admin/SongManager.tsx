@@ -299,32 +299,37 @@ export function SongManager({ initialSongs }: SongManagerProps) {
                     {/* Actions */}
                     <td style={{ padding: "16px 24px", textAlign: "right" }}>
                       <div style={{ display: "flex", justifyContent: "flex-end", gap: "8px" }}>
-                        <Link href={`/admin/songs/${song.id}/edit`}>
-                          <button
-                            title="Edit Song"
-                            style={{
-                              width: "32px",
-                              height: "32px",
-                              borderRadius: "6px",
-                              border: "none",
-                              background: "transparent",
-                              color: "#74593e",
-                              display: "inline-flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                              cursor: "pointer",
-                              transition: "background 0.15s"
-                            }}
-                            onMouseOver={e => (e.currentTarget.style.background = "#f6f3f4")}
-                            onMouseOut={e => (e.currentTarget.style.background = "transparent")}
-                          >
-                            <Edit size={16} />
-                          </button>
+                        <Link
+                          href={`/admin/songs/${song.id}/edit`}
+                          title="Edit Song"
+                          style={{
+                            width: "32px",
+                            height: "32px",
+                            borderRadius: "6px",
+                            border: "none",
+                            background: "transparent",
+                            color: "#74593e",
+                            display: "inline-flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            cursor: "pointer",
+                            transition: "background 0.15s",
+                            textDecoration: "none"
+                          }}
+                          onMouseOver={e => (e.currentTarget.style.background = "#f6f3f4")}
+                          onMouseOut={e => (e.currentTarget.style.background = "transparent")}
+                        >
+                          <Edit size={16} />
                         </Link>
                         <button
+                          type="button"
                           title="Delete Song"
                           disabled={deletingId === song.id}
-                          onClick={() => handleDelete(song.id, song.title)}
+                          onClick={(e) => {
+                            e.preventDefault()
+                            e.stopPropagation()
+                            handleDelete(song.id, song.title)
+                          }}
                           style={{
                             width: "32px",
                             height: "32px",
