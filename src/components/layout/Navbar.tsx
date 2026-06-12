@@ -6,6 +6,7 @@ import { useSession, signOut } from "next-auth/react"
 import { useRouter, useSearchParams } from "next/navigation"
 import { AuthModal } from "@/components/auth/AuthModal"
 import { PremiumModal } from "@/components/premium/PremiumModal"
+import { TheologyModal, CommunityModal, LanguageModal, NotificationsModal } from "@/components/layout/NavbarModals"
 
 interface NavbarProps {
   onSearch?: (q: string) => void
@@ -18,6 +19,10 @@ export function Navbar({ onSearch }: NavbarProps) {
   const [showAuth, setShowAuth] = useState(false)
   const [authMode, setAuthMode] = useState<"register" | "login">("register")
   const [showPremium, setShowPremium] = useState(false)
+  const [showTheology, setShowTheology] = useState(false)
+  const [showCommunity, setShowCommunity] = useState(false)
+  const [showLanguage, setShowLanguage] = useState(false)
+  const [showNotifications, setShowNotifications] = useState(false)
   const [showUserMenu, setShowUserMenu] = useState(false)
   const [searchVal, setSearchVal] = useState(searchParams.get("q") || "")
 
@@ -143,21 +148,38 @@ export function Navbar({ onSearch }: NavbarProps) {
                 borderBottom: "2px solid #74593e",
                 paddingBottom: "2px",
               }}>Songs</Link>
-              <Link href="/theology" style={{
-                fontFamily: "var(--font-body)",
-                fontSize: "14px",
-                fontWeight: "500",
-                color: "#45474c",
-                textDecoration: "none",
-                transition: "color 0.15s",
-              }}>Theology</Link>
-              <Link href="/community" style={{
-                fontFamily: "var(--font-body)",
-                fontSize: "14px",
-                fontWeight: "500",
-                color: "#45474c",
-                textDecoration: "none",
-              }}>Community</Link>
+              <button
+                onClick={() => setShowTheology(true)}
+                style={{
+                  fontFamily: "var(--font-body)",
+                  fontSize: "14px",
+                  fontWeight: "500",
+                  color: "#45474c",
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  padding: 0,
+                  transition: "color 0.15s",
+                }}
+              >
+                Theology
+              </button>
+              <button
+                onClick={() => setShowCommunity(true)}
+                style={{
+                  fontFamily: "var(--font-body)",
+                  fontSize: "14px",
+                  fontWeight: "500",
+                  color: "#45474c",
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  padding: 0,
+                  transition: "color 0.15s",
+                }}
+              >
+                Community
+              </button>
               <button
                 onClick={() => setShowPremium(true)}
                 style={{
@@ -175,27 +197,33 @@ export function Navbar({ onSearch }: NavbarProps) {
 
             {/* Icons */}
             <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-              <button style={{
-                background: "none",
-                border: "none",
-                cursor: "pointer",
-                padding: "8px",
-                color: "#45474c",
-                borderRadius: "50%",
-                transition: "background 0.15s",
-              }}>
+              <button 
+                onClick={() => setShowLanguage(true)}
+                style={{
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  padding: "8px",
+                  color: "#45474c",
+                  borderRadius: "50%",
+                  transition: "background 0.15s",
+                }}
+              >
                 <span className="material-symbols-outlined">language</span>
               </button>
 
-              <button style={{
-                background: "none",
-                border: "none",
-                cursor: "pointer",
-                padding: "8px",
-                color: "#45474c",
-                borderRadius: "50%",
-                position: "relative",
-              }}>
+              <button 
+                onClick={() => setShowNotifications(true)}
+                style={{
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  padding: "8px",
+                  color: "#45474c",
+                  borderRadius: "50%",
+                  position: "relative",
+                }}
+              >
                 <span className="material-symbols-outlined">notifications</span>
                 <span style={{
                   position: "absolute",
@@ -300,6 +328,10 @@ export function Navbar({ onSearch }: NavbarProps) {
 
       <AuthModal isOpen={showAuth} onClose={() => setShowAuth(false)} initialMode={authMode} />
       <PremiumModal isOpen={showPremium} onClose={() => setShowPremium(false)} />
+      <TheologyModal isOpen={showTheology} onClose={() => setShowTheology(false)} />
+      <CommunityModal isOpen={showCommunity} onClose={() => setShowCommunity(false)} />
+      <LanguageModal isOpen={showLanguage} onClose={() => setShowLanguage(false)} />
+      <NotificationsModal isOpen={showNotifications} onClose={() => setShowNotifications(false)} />
     </>
   )
 }
