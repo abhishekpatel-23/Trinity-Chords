@@ -1,6 +1,11 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
+:root {
+  --font-display: 'Montserrat', sans-serif;
+  --font-body: 'Public Sans', sans-serif;
+}
+
 @theme {
   /* ===== COLOR PALETTE (from DESIGN.md) ===== */
   --color-surface: #fcf8f9;
@@ -62,8 +67,8 @@
   --color-on-background: #1b1b1c;
 
   /* ===== FONTS ===== */
-  --font-display: var(--font-montserrat, "Montserrat", sans-serif);
-  --font-body: var(--font-public-sans, "Public Sans", sans-serif);
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
 
   /* ===== BORDER RADIUS ===== */
   --radius-sm: 0.25rem;
