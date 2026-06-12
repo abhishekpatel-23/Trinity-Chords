@@ -142,8 +142,6 @@ model Report {
   createdAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   song      Song     @relation(fields: [songId], references: [id], onDelete: Cascade)
-
-  @@unique([userId, songId])
 }
 
 model UserSubscription {
