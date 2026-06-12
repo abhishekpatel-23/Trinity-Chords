@@ -418,3 +418,32 @@ h1, h2, h3, h4, h5, h6 {
   color: #74593e !important;
 }
 
+/* ===== MODAL SYSTEM ===== */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(3, 8, 19, 0.45);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 24px;
+}
+
+@keyframes slideInUp {
+  from {
+    transform: translateY(24px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.slide-in-up {
+  animation: slideInUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+
